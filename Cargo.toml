@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 gtk = "^0.15.0"
 webkit2gtk = "0.18.0"
+glib = "^0.15.0"

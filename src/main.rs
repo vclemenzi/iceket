@@ -1,4 +1,6 @@
 mod interface;
+mod html; 
+mod utils;
 
 extern crate gtk;
 use gtk::{prelude::*, Inhibit, Window, WindowType};
