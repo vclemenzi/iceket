@@ -1,14 +1,32 @@
 extern crate gtk;
 extern crate glib;
 extern crate webkit2gtk;
-use gtk::{prelude::*, Box, Orientation, SearchEntry, Window};
+use gtk::{prelude::*, Box, Orientation, SearchEntry, Window, Button, IconSize, gdk};
 use webkit2gtk::{WebContext, WebView, WebViewExt, SettingsExt};
-use glib::clone;
-
+use glib::{clone};
 use crate::{html, utils};
 
-
 pub fn build(window: &Window) {
+    // CSS styles
+    let css_provider = gtk::CssProvider::new();
+    css_provider.load_from_data(r#"
+       .search {
+            color: #fff;
+            border: 0.05px solid #fff;
+            border-radius: 5px;
+        }
+
+        button {
+            border: 0.05px solid #fff;
+            border-radius: 5px;
+        }
+    "#.as_bytes()).unwrap();
+    gtk::StyleContext::add_provider_for_screen(
+        &gdk::Screen::default().unwrap(),
+        &css_provider,
+        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+    );
+
     let vbox = Box::new(Orientation::Vertical, 0); 
 
     let webview = WebView::with_context(&WebContext::default().unwrap());
@@ -27,6 +45,20 @@ pub fn build(window: &Window) {
         .build();
 
     let search_bar = SearchEntry::new();
+    let reload_btn = Button::new();
+    reload_btn.set_image(Some(&gtk::Image::from_icon_name(Some("view-refresh"), IconSize::Button)));
+    let other_btn = Button::new();
+    other_btn.set_image(Some(&gtk::Image::from_icon_name(Some("zoom-select-fit"), IconSize::Button)));
+    /*let back_btn = Button::new();
+    back_btn.set_image(Some(&gtk::Image::from_icon_name(Some("go-previous"), IconSize::Button)));
+    let forward_btn = Button::new();
+    forward_btn.set_image(Some(&gtk::Image::from_icon_name(Some("go-next"), IconSize::Button)));*/
+
+    //navbox.pack_start(&back_btn, false, false, 0);
+    //navbox.pack_start(&forward_btn, false, false, 0);
+    navbox.pack_start(&reload_btn, false, false, 1);
+    navbox.pack_start(&search_bar, true, true, 0);
+    navbox.pack_start(&other_btn, false, false, 1);
 
     search_bar.connect_activate(clone!(@weak webview => move |input| {
         let text = input.text();
@@ -35,13 +67,25 @@ pub fn build(window: &Window) {
             webview.load_uri(&text);
         } else {
             let search_string = format!("https://www.google.com/search?q={}", text.replace(" ", "+"));
-
             webview.load_uri(&search_string);
         }
     }));
 
+    reload_btn.connect_clicked(clone!(@weak webview => move |_| {
+        webview.reload()
+    }));
 
-    navbox.pack_start(&search_bar, true, true, 0);
+    webview.connect_is_loading_notify(clone!(@weak reload_btn, @weak search_bar  => move |webview| {
+        let is_loading = webview.is_loading();
+
+        if is_loading {
+            reload_btn.set_image(Some(&gtk::Image::from_icon_name(Some("process-stop"), gtk::IconSize::Button)));
+            search_bar.set_text(webview.uri().unwrap().as_str());
+        } else {
+            reload_btn.set_image(Some(&gtk::Image::from_icon_name(Some("view-refresh"), gtk::IconSize::Button)));
+            search_bar.set_text(webview.uri().unwrap().as_str());
+        }
+    }));
 
     // Vbox components
     vbox.pack_start(&navbox, false, false, 0);
@@ -49,3 +93,4 @@ pub fn build(window: &Window) {
 
     window.set_child(Some(&vbox));
 }
+

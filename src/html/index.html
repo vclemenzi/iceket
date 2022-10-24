@@ -1,116 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Tab</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Tab</title>
 </head>
+
 <body>
-    <h1>Iceket</h1>
-    <br>
-    <div class="search">
-        <img class="search_engine" src="https://www.shareicon.net/data/512x512/2016/07/10/119930_google_512x512.png" engine="google" onclick="setSearchMotor()">
-        <input type="text" placeholder="Search the world wide web for what you want..." onkeydown="if (event.keyCode == 13) search()">
-    </div>
-    <script>
-        function setSearchMotor() {
-            let se = document.querySelector(".search_engine");
+  <h1>Iceket</h1>
+  <br>
+  <div class="search">
+    <img class="search_engine" src="https://www.shareicon.net/data/512x512/2016/07/10/119930_google_512x512.png"
+      engine="google">
+    <input type="text" placeholder="Search the world wide web for what you want..."
+      onkeydown="if (event.keyCode == 13) search()">
+  </div>
+  <script>
 
-            if (se.getAttribute("engine") == "google") {
+    function search() {
+      let search = document.querySelector(".search input").value;
+      let search_formated = search.replace(" ", "+");
+      window.location.href = "https://www.google.com/search?q=" + search_formated;
+    }
+  </script>
+  <style>
+    body {
+      background-color: #2b2a33;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+    }
 
-                se.setAttribute("src", "https://cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/bing-512.png");
-                se.setAttribute("engine", "bing");
-                localStorage.setItem("search_engine", "bing");
+    h1 {
+      font-size: 3rem;
+    }
 
-            } else if (se.getAttribute("engine") == "bing") {
+    .search {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
 
-                se.setAttribute("src", "https://cdn.freebiesupply.com/logos/large/2x/duckduckgo-3-logo-png-transparent.png");
-                se.setAttribute("engine", "bing");
-                localStorage.setItem("search_engine", "ddg");
+    .search input {
+      background-color: #2b2a33;
+      color: #fff;
+      border: 0.05px solid rgba(255, 255, 255, 0.432);
+      border-radius: 5px;
+      padding: 10px;
+      margin: 5px;
+      width: 650px;
+      height: 30px;
+    }
 
-            } else if (se.getAttribute("engine") == "ddg") {
-                se.setAttribute("src", "https://www.shareicon.net/data/512x512/2016/07/10/119930_google_512x512.png");
-                se.setAttribute("engine", "google");
-                localStorage.setItem("search_engine", "google");
-            }
-        }
-
-        if (!localStorage.getItem("search_engine")) {
-            localStorage.setItem("search_engine", "google");
-        }
-
-        let se = document.querySelector(".search_engine");
-        
-        if (localStorage.getItem("search_engine") == "google") {
-            se.setAttribute("src", "https://www.shareicon.net/data/512x512/2016/07/10/119930_google_512x512.png");
-            se.setAttribute("engine", "google");
-        } else if (localStorage.getItem("search_engine") == "bing") {
-            se.setAttribute("src", "https://cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/bing-512.png");
-            se.setAttribute("engine", "bing");
-        } else if (localStorage.getItem("search_engine") == "ddg") {
-            se.setAttribute("src", "https://cdn.freebiesupply.com/logos/large/2x/duckduckgo-3-logo-png-transparent.png");
-            se.setAttribute("engine", "ddg");
-        } 
-
-        function search() {
-            let search = document.querySelector(".search input").value;
-            let se = document.querySelector(".search_engine");
-            let search_formated = search.replace(" ", "+");
-
-            if (se.getAttribute("engine") == "google") {
-                window.location.href = "https://www.google.com/search?q=" + search_formated;
-            } else if (se.getAttribute("engine") == "bing") {
-                window.location.href = "https://www.bing.com/search?q=" + search_formated;
-            } else if (se.getAttribute("engine") == "ddg") {
-                window.location.href = "https://duckduckgo.com/?q=" + search_formated;
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #2b2a33;
-            color: #ffffff;
-            font-family: Arial, Helvetica, sans-serif;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 80vh;
-        }
-
-        h1 {
-            font-size: 3rem;
-        }
-
-        .search {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .search input {
-            background-color: #42414d;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 5px;
-            width: 650px;
-            height: 30px;
-        }
-
-        .search img {
-            width: 30px;
-            height: 30px;
-            margin: 5px;
-            background-color: #42414d;
-            border-radius: 5px;
-            padding: 10px;
-            cursor: pointer;
-        }
-    </style>
+    .search img {
+      width: 30px;
+      height: 30px;
+      margin: 5px;
+      background-color: #2b2a33;
+      border-radius: 5px;
+      padding: 10px;
+    }
+  </style>
 </body>
+
 </html>
