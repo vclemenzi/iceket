@@ -1,15 +1,17 @@
-extern crate gtk;
 extern crate glib;
+extern crate gtk;
 extern crate webkit2gtk;
-use gtk::{prelude::*, Box, Orientation, SearchEntry, Window, Button, IconSize, gdk};
-use webkit2gtk::{WebContext, WebView, WebViewExt, SettingsExt};
-use glib::{clone};
 use crate::{html, utils};
+use glib::clone;
+use gtk::{gdk, prelude::*, Box, Button, IconSize, Orientation, SearchEntry, Window};
+use webkit2gtk::{SettingsExt, WebContext, WebView, WebViewExt};
 
 pub fn build(window: &Window) {
     // CSS styles
     let css_provider = gtk::CssProvider::new();
-    css_provider.load_from_data(r#"
+    css_provider
+        .load_from_data(
+            r#"
        .search {
             color: #fff;
             border: 0.05px solid #fff;
@@ -20,14 +22,17 @@ pub fn build(window: &Window) {
             border: 0.05px solid #fff;
             border-radius: 5px;
         }
-    "#.as_bytes()).unwrap();
+    "#
+            .as_bytes(),
+        )
+        .unwrap();
     gtk::StyleContext::add_provider_for_screen(
         &gdk::Screen::default().unwrap(),
         &css_provider,
         gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
     );
 
-    let vbox = Box::new(Orientation::Vertical, 0); 
+    let vbox = Box::new(Orientation::Vertical, 0);
 
     let webview = WebView::with_context(&WebContext::default().unwrap());
 
@@ -46,9 +51,15 @@ pub fn build(window: &Window) {
 
     let search_bar = SearchEntry::new();
     let reload_btn = Button::new();
-    reload_btn.set_image(Some(&gtk::Image::from_icon_name(Some("view-refresh"), IconSize::Button)));
+    reload_btn.set_image(Some(&gtk::Image::from_icon_name(
+        Some("view-refresh"),
+        IconSize::Button,
+    )));
     let other_btn = Button::new();
-    other_btn.set_image(Some(&gtk::Image::from_icon_name(Some("zoom-select-fit"), IconSize::Button)));
+    other_btn.set_image(Some(&gtk::Image::from_icon_name(
+        Some("zoom-select-fit"),
+        IconSize::Button,
+    )));
     /*let back_btn = Button::new();
     back_btn.set_image(Some(&gtk::Image::from_icon_name(Some("go-previous"), IconSize::Button)));
     let forward_btn = Button::new();
@@ -62,11 +73,11 @@ pub fn build(window: &Window) {
 
     search_bar.connect_activate(clone!(@weak webview => move |input| {
         let text = input.text();
-        
+
         if utils::is_url(&text) {
             webview.load_uri(&text);
         } else {
-            let search_string = format!("https://www.google.com/search?q={}", text.replace(" ", "+"));
+            let search_string = format!("https://duckduckgo.com/?q={}", text.replace(" ", "+"));
             webview.load_uri(&search_string);
         }
     }));
@@ -93,4 +104,3 @@ pub fn build(window: &Window) {
 
     window.set_child(Some(&vbox));
 }
-

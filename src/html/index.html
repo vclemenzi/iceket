@@ -12,8 +12,7 @@
   <h1>Iceket</h1>
   <br>
   <div class="search">
-    <img class="search_engine" src="https://www.shareicon.net/data/512x512/2016/07/10/119930_google_512x512.png"
-      engine="google">
+    <img class="search_engine" src="https://duckduckgo.com/favicon.ico" engine="google">
     <input type="text" placeholder="Search the world wide web for what you want..."
       onkeydown="if (event.keyCode == 13) search()">
   </div>
@@ -22,7 +21,7 @@
     function search() {
       let search = document.querySelector(".search input").value;
       let search_formated = search.replace(" ", "+");
-      window.location.href = "https://www.google.com/search?q=" + search_formated;
+      window.location.href = "https://duckduckgo.com/?q=" + search_formated;
     }
   </script>
   <style>
@@ -61,8 +60,8 @@
     }
 
     .search img {
-      width: 30px;
-      height: 30px;
+      width: 40px;
+      height: 40px;
       margin: 5px;
       background-color: #2b2a33;
       border-radius: 5px;

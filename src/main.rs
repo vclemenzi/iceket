@@ -1,5 +1,5 @@
+mod html;
 mod interface;
-mod html; 
 mod utils;
 
 extern crate gtk;
@@ -14,7 +14,7 @@ fn main() {
 
     window.show_all();
 
-    window.set_default_size(600, 700);
+    window.set_default_size(800, 800);
 
     window.connect_delete_event(|_, _| {
         gtk::main_quit();
@@ -23,3 +23,4 @@ fn main() {
 
     gtk::main();
 }
+
